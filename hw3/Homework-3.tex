@@ -1,0 +1,108 @@
+\documentclass{article}
+\author{John Dulin, jdd49}
+\title{PHYS 250 Homework 3}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1}
+Consider $ f(x) = sin(x) $ and evaluate the derivative at $x = 0.9$
+
+\subsection*{(i)}
+Calculations for the relative error from using center differencing (specifically scipy.misc.derivative) at decreasing
+values of $h$.
+
+\begin{tabular}{cl | cl}
+h & Relative error\\
+\hline
+$10^{-4}$ & $1.6666662894238016 * 10^{-7}$\\
+$10^{-5}$ & $1.6667538460524156 * 10^{-9}$\\
+$10^{-6}$ & $2.6271984587822317 * 10^{-11}$\\
+$10^{-7}$ & $9.4488861179797823 * 10^{-12}$\\
+$10^{-8}$ & $5.2636439651365663  * 10^{-10}$\\
+$10^{-9}$ & $1.2596799159325656 * 10^{-9}$\\
+\end{tabular}
+
+\subsection*{(ii)}
+From the equation for an error estimate,
+$$ e(h) = \epsilon/h + (h^2/6)M $$
+Derive the expression for h at which $e(h)$ is a minimum.
+
+\vspace{60 mm}
+
+\subsection*{(iii)}
+For our $f(x)$ what is the maximum value M can have?  Use this to estimate the value of h for which $e(h)$ is a minimum, deriving M from the equation,
+$$ M <= d^3f(x)/dx^3 $$
+
+\vspace{60 mm}
+
+\section*{Problem 2}
+\subsection*{(i)}
+Calculate $F_2(h)$ and generalize this to ﬁnd the expression for $F_{j}(h)$
+assuming that h gets halved to increase precision, $h→ h/2$.
+
+\vspace{60 mm}
+
+\subsection*{(ii)}
+Looking at the expression you get compare this to what we found for the case of center
+differencing. Explain based on this why you expect the algorithm using forward differencing
+to converge more slowly.
+
+\vspace{60 mm}
+
+\subsection*{(iii)}
+Using richardson\_center.py as a model, implement the previous part's algorithm.  Include the code or differences 
+between the original code and yours in the solution.
+
+
+
+\vspace{60 mm}
+
+\section*{Problem 3}
+Consider $ f(x) = 2^xsin(x) $ evaluated at $z = 1.05$ and $h = 0.4$
+
+\subsection*{(i)}
+Applying the product rule, we analytically find the derivative of $f(x)$ to be,
+$$ f'(x) = 2^x(cos(x) + ln(2)sin(x)) $$
+where $f'(1.05) = 2.30753$
+
+\subsection*{(ii)}
+The derivative $f'(z)$ is estimated to be $2.2751414822268563$ from Richardson Extrapolation of the center differencing
+algorithm after 8 steps.
+
+The error of the Richardson extrapolated center differencing algorithm is $|2.2751414822268563 - 2.30753| = 
+0.0323885177731437$.  The error of the Richardson extrapolated forward differencing algorithm is $|2.29036535 - 2.30753| = 0.01716465.$
+
+\subsection*{(iii)}
+Determine the number of iterations, n, required for each algorithm to compute $f(z)$ to an
+accuracy of $10^{−7}$.
+
+\vspace{60 mm}
+
+\subsection*{(iv)}
+Is center differencing better because it requires fewer iterations?  
+How many new function evaluations are required to calculate $F_1(h/2)$ in each case? Use this to ﬁnd expressions for the
+number of function evaluations needed to perform n iterations of Richardson extrapolation
+for both algorithms.
+
+\vspace{60 mm}
+
+\subsection*{(v)}
+Using your expressions from the previous part how many function evaluations are required
+for the results from part (iii)?
+
+\vspace{60 mm}
+
+\subsection*{(vi)}
+Find the minimum error and the number of iterations that give this minimum error for
+estimating $f(z)$ for both algorithms.
+
+\vspace{60 mm}
+
+\subsection*{(vii)}
+Again we see there is a minimum error? Why do the algorithms eventually fail? Mathematically we can take the 
+limit $h$ approaches $0$, describe what happens numerically to prevent us from doing this.
+
+\vspace{60 mm}
+
+\end{document}
