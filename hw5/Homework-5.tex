@@ -8,4 +8,102 @@
 \section*{Problem 1}
 
 \subsection*{(i)}
+To derive the leap-frog approximation to $y_{n+1}$, we start with the center differencing formula for the first derivative,
 
+$$ \frac{dy}{dt} = \frac{y(t + \Delta\/t) - y(t - \Delta\/t)}{2\Delta\/t} $$
+
+From this, we simply solve for the next term in our solution function, $y(t + \Delta\/t)$, in terms of the 
+known values, the differential equation $-dy/dt$ and the initial value $y(t - \Delta\/t)$.
+
+$$ 2\Delta\/t\frac{dy}{dt} = y(t + \Delta\/t) - y(t - \Delta\/t)   $$
+$$ y(t + \Delta\/t) = 2\Delta\/t\frac{dy}{dt} + y(t - \Delta\/t) $$ 
+
+\subsection*{(ii)}
+
+The error in $y_{n+1}$ can be found from the expression,
+
+$$ y_{n+1} + \delta\/y_{n+1} = 2\Delta\/t\frac{dy}{dt} + y_{n-1}+  \delta\/y_{n-1} $$
+
+and the fact that the error in each term is,
+
+$$ \delta\/y_{n} = \beta\/y_{n-1} $$
+
+So we have estimates for the error in 
+
+\subsection*{(iii)}
+We can determine whether the method is stable or unstable for different cases of differential equations by determinig whether the value of $\beta$ is below or above 1.0, respectively.
+
+\section*{Problem 2}
+
+\subsection*{(i)}
+To find the maximum height of the projectile ignoring air resistance we define an equation for its position in time, assuming $y = 0$ is its starting height,
+
+$$ y(t) = y_{0} + v_{0}t + \frac{1}{2}gt^{2} $$
+
+Then we take its derivative with respect to $t$,
+
+$$ \frac{dy}{dt} = v_{0} + gt $$
+
+Setting this equal to $0$, we can calculate the exact time $t$ at which the proctile's velocity is zero and it reaches its apex,
+
+$$ 0 = v_{0} + gt $$
+$$ -gt = v_{0} $$
+$$ t = \frac{v_{0}}{-g}$$
+
+Knowing that $v_{0} = 8 m/s$ and $g = 9.8 m/s^2$, we calculate $t$ to be approximately 0.816 seconds.
+So the maximum height of the projective is $y(0.816) = 3.262$ meters.
+
+\subsection*{(ii)}
+If air resistance is modeled as a force quadratic in velocity,
+
+$$ F = -bv|v|$$
+
+We can define the motion of the projectile as a system of first order differential equations, by considering 
+
+$$ $$
+
+\subsection*{(iii)}
+
+
+\subsection*{(iv)}
+
+\section*{Problem 3}
+See attached.
+
+\section*{Problem 4}
+
+\subsection*{(i)}
+
+\subsection*{(ii)}
+
+\subsection*{(iii)}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\end{document}
