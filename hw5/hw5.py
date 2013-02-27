@@ -10,11 +10,22 @@
 # All equations assume differential equations of the form f(y, t, *args)
 #
 
+def f(y, t):
+	""" Solves the system of Problem 2, defined in (ii). """
+	b = 0.002
+	g = -9.8
+	y = y[0]  # Position
+	v = y[1]  # Velocity
+
+	dydt = v
+	dvdt = -b * v * abs(v)/m
+	return [dydt, dvdt]
+
 def rk2(f, y0, t, args = ()):
 	""" Second-Order Runge-Kutta Method to solve the differential equation f.
 		Returns the array of y values evaluated at the times in the array t. """	
-	h	  = t[1] - t[0] # Runge Kutta has equally spaced points
-	n 	  = 1
+	h	  = 0.005 
+	n 	  = 0
 
 	while n <= len(t):
 		k1    = h * f(y0[n], t[n])
@@ -27,8 +38,8 @@ def rk2(f, y0, t, args = ()):
 
 def rk4(f, y0, t, args = ()):
 	""" Fourth-Order Runge-Kutta Method to solve the differential equation f. """
-	h	  = t[1] - t[0] # Runge Kutta has equally spaced points
-	n	  = 1
+	h	  = 0.005
+	n	  = 0
 
 	while n <= len(t):
 		k1 = h * f(y0[n], t[n])
@@ -41,9 +52,18 @@ def rk4(f, y0, t, args = ()):
 
 	return y0
 
-def four():
+def two():
+	initial   = [0., 8., 9.8]
+	times     = np.linspace(0, 5., 1000)
+	solutions = scipy.integrate.odeint(f, initial, times)
+	position  = solutions[:,0]
+	velocity  = solutions[:,1]
+	height    = np.amax(position)
 
+	print("The highest point the projectile reaches is {0} at time {1}".format(height, times[np.where(position==height)]))
 
 if __name__ == "__main__":
-	four()
+	import numpy as np
+	import scipy.integrate
+	two()
 
