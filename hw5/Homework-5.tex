@@ -58,12 +58,21 @@ If air resistance is modeled as a force quadratic in velocity,
 
 $$ F = -bv|v|$$
 
-We can define the motion of the projectile as a system of first order differential equations, by considering 
+We can define the motion of the projectile as a system of first order differential equations by considering the acceleration as just the derivative of the unknown function of the velocity, $v$.  So from the equation,
 
-$$ $$
+$$ m\frac{d^{2}y}{dt^{2}} = -bv|v|$$
+
+We have the set of differential equations,
+
+$$ \frac{dy}{dt} = v  $$
+$$ \frac{dv}{dt} = \frac{-bv|v|}{m} $$
 
 \subsection*{(iii)}
-
+Now we can numerically calculate our answer to question (i) with the assumption $ b = 0.002 $ kg/m,
+So we use the scipy module 'odeint' like so, 
+\begin{verbatim} 
+integrate.odeint()
+\end{verbatim}
 
 \subsection*{(iv)}
 
