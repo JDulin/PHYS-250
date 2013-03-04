@@ -7,8 +7,31 @@
 # Linear Algebra
 #
 
-def thomas():
-	""" Thomas algorithm implementation to solve tridiagonal systems of linear equations. (Problem 4 on HW) """
+def thomas( a, b, c, beta):
+	""" Tridiagonal matrix (Thomas) algorithm implementation to solve tridiagonal systems of linear equations.
+	(Problem 4 on HW) """
+	try:
+		c[0]    /= b[0]
+		beta[0] /= b[0]
+	except ValueError:
+		print "b[0] is 0, Divide by zero!"
+		
+	n = len(beta) 
+
+	c += [0] 
+	for i in xrange(n)
+		divide   = b[i] - (a[i-1] * c[i-1])
+	        c[i]    /= divide
+		beta[i]  = (beta[i] - a[i-1] * beta[i-1]) / divide
+		
+	x = np.zeros(n) 
+	x[n-1] = beta[n-1]
+	for i in reversed(xrange(n-1)):
+	        x[i] = beta[i] - c[i] * x[i+1]
+				 
+	return x
+
+
 
 
 def two():
@@ -38,4 +61,4 @@ def three():
 if __name__ == "__main__":
 	import numpy as np
 	import scipy.linalg as la
-	three()
+	two()
