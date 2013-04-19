@@ -1,0 +1,60 @@
+\documentclass[12pt,a4paper,notitlepage]{article}
+\usepackage{amsmath}
+\usepackage{graphicx}
+\title{PHYS 250 Homework 10}
+\author{John Dulin}
+\date{April 15, 2013}
+
+\begin{document}
+\maketitle
+
+\section*{Problem 1}
+\begin{verbatim}
+def linear_leastsq(x, y, sigma = None):
+    """ Returns a1, a2, should include sigma_a1, sigma_a2 """
+    
+    if sigma is None:
+        sigma = np.ones_like(y)
+    else:
+        sigma = y.copy.fill(sigma)
+
+    N     = length(x)
+
+    Sx    = sum(x)
+    Sy    = sum(y)
+    Sxy   = sum(x*y)
+    Sxx   = sum(x**2)
+    Delta = N * Sxx - Sx**2
+    a1    = (Sxx * Sy - Sx * Sxy) / Delta
+    a2    = (N * Sxy - Sx * Sy) / Delta
+
+    return [a1, a2]
+\end{verbatim}
+
+\section*{Problem 2}
+
+Our previous function can return the $a_{1}$ and $a_{2}$ values for line fit.
+
+We define a function to calculate chi-squared,
+
+\begin{verbatim}
+def chisq(model, x, y, sigma = None):
+    if sigma == None:
+        sigma = np.ones_like(y)
+    else:
+        sigma = y.copy.fill(sigma)
+
+    return sum(((y - model(x , *params) / sigma )**2)
+\end{verbatim}
+
+We calculate the degrees of freedom (DoF) as the difference between the number of parameters and number of data points, then divide the chi-squared by the DoF to determine the reduced chi-squared.
+
+
+$$  $$
+
+\section*{Problem 3}
+
+Each bin has a width of $\frac{8}{51}=0.15686$.  We'll shift the bins to the right by half of this width to center them.
+\section*{Problem 4}
+
+\end{document}
