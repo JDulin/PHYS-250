@@ -1,0 +1,163 @@
+#
+# Code Credit to Lucas Flowers
+#
+
+import scipy.special as spec
+
+# Richardson centering algorithm
+def richardson_center (f, z, h, nsteps, args=()) :
+    """The derivative f'(z) using Richardson extrapolation and center
+    differencing.  Returned is the full table of approximations, Fij for 
+    j <= i. The values of Fij for j > i are set to zero.  The final value
+    F[-1,-1] should be the most accurate estimate.
+    Inputs:
+    f : The function for which we are estimate the derivative.
+    z : Point at which to evaluate the derivative.
+    h : Initial stepsize.
+    nsteps : Number of steps to perform.
+    args : extra arguments to pass to the function, f."""
+    # Create a zero filled table
+    F = zeros ((nsteps,nsteps))
+    # First column of F is the center differencing estimate
+    for j in xrange(nsteps) :
+        F[j,0] = (f(z+h,*args) - f(z-h,*args)) / (2.*h)
+        h /= 2.0
+    # Now iterate
+    fact = 1.0
+    for i in xrange(1,nsteps) :
+        fact *= 0.25
+        for j in xrange(1,i+1) :
+            F[i,j] = F[i-1,j-1] - (F[i-1,j-1] - F[i,j-1])/ (1-fact)
+    return F
+    
+print('-------- 1a --------\n')
+
+# Calculates the numerical derivative of Jv with respect to v at v and x, using forward differencing with h as the step.
+def forward_d(v, x, h):
+    return (spec.jv(v + h, x) - spec.jv(v, x)) / h
+
+# Calculates the numerical derivative of Jv with respect to v at v and x, using center differencing with h as the step.
+def center_d(v, x, h):
+    return (spec.jv(v + h, x) - spec.jv(v - h, x)) / (2 * h)
+
+# Analytical derivative of J_v(x) with respect to v, evaluated at v = 0.
+def djv_dv(x):
+    return pi / 2 * spec.y0(x)
+
+(v, x, h) = (0., 1.5, 0.5)
+
+print('h')
+print('Forward Derivative ' + str(forward_d(v, x, h)))
+print('Forward Relative Error: ' + str(1 - forward_d(v, x, h) / djv_dv(x)))
+print(' Center Derivative ' + str( center_d(v, x, h)))
+print(' Center Relative Error: ' + str(1 -  center_d(v, x, h) / djv_dv(x)))
+
+print('h / 2')
+print('Forward Derivative ' + str(forward_d(v, x, h / 2)))
+print('Forward Relative Error: ' + str(1 - forward_d(v, x, h / 2) / djv_dv(x)))
+print(' Center Derivative ' + str( center_d(v, x, h / 2)))
+print(' Center Relative Error: ' + str(1 -  center_d(v, x, h / 2) / djv_dv(x)))
+
+print('-------- 1b --------\n')
+
+# Calculate derivative
+rc = richardson_center(spec.jv, v, h, 10, args = (x,))
+
+# Retrieve the list of derivative estimates, from the first to the tenth
+rc_diag = diag(rc)
+
+# The difference between each successive estimate
+rc_diff = abs(diff(rc_diag))
+
+# The absolute difference between each estimate and the true value
+rc_abs = abs(djv_dv(x) - rc_diag)
+
+# Plot the two differences
+clf()
+title('Errors in the Richardson Center Algorithm\nWhen Calculating the ' + str(int(v)) + 'th Order Bessel Function\'s Derivative at x = ' + str(x))
+semilogy(range(0,  9), rc_diff, 'o', label = 'Consecutive iterations')
+semilogy(range(0, 10), rc_abs, 'o', label = 'Each iteration and the true value')
+legend(title = 'Absolute difference between:')
+xlabel('Algorithm Iterations')
+ylabel('Absolute Difference')
+xlim((-0.5, 9.5))
+xticks(arange(0, 10))
+
+print('-------- 2 --------\n')
+
+# Factorial
+def factorial(n):
+    return spec.gamma(n + 1)
+
+# First term of int_djdv
+def term1(n, x):
+    return pi / 2 * spec.yn(n, x)
+    
+# Second term of int_djdv
+def term2(n, x):
+    
+    # Calculate the summation
+    ksum = 0
+    for k in range(0, n):
+        ksum += (x / 2) ** k * spec.jv(k, x) / \
+                (factorial(k) * (n - k))
+                
+    return factorial(n) / (2 * (x / 2) ** n) * ksum
+    
+# Analytical derivative of J_v(x) with respect to v = n for any integer v and any x.
+def int_djdv(n, x):
+    return term1(n, x) + term2(n, x)
+
+# Repeat the previous part with v = n = 4
+v = 4
+
+# Calculate derivative
+rc = richardson_center(spec.jv, v, h, 10, args = (x,))
+
+# Retrieve the list of derivative estimates, from the first to the tenth
+rc_diag = diag(rc)
+
+# The difference between each successive estimate
+rc_diff = abs(diff(rc_diag))
+
+# The absolute difference between each estimate and the true value
+rc_abs = abs(int_djdv(v, x) - rc_diag)
+
+print('Relative Error: ' + str(1 - rc_diag[-1] / int_djdv(v, x)))
+
+## Plot the two differences
+# clf()
+# title('Errors in the Richardson Center Algorithm\nWhen Calculating the ' + str(int(v)) + 'th Order Bessel Function\'s Derivative at x = ' + str(x))
+# semilogy(range(0,  9), rc_diff, 'o', label = 'Consecutive iterations')
+# semilogy(range(0, 10), rc_abs, 'o', label = 'Each iteration and the true value')
+# legend(title = 'Absolute difference between:')
+# xlabel('Algorithm Iterations')
+# ylabel('Absolute Difference')
+# xlim((-0.5, 9.5))
+# xticks(arange(0, 10))
+
+# Repeat the previous part with v = n = 40
+v = 40
+
+# Calculate derivative
+rc = richardson_center(spec.jv, v, h, 10, args = (x,))
+
+# Retrieve the list of derivative estimates, from the first to the tenth
+rc_diag = diag(rc)
+
+# The difference between each successive estimate
+rc_diff = abs(diff(rc_diag))
+
+# The absolute difference between each estimate and the true value
+rc_abs = abs(int_djdv(v, x) - rc_diag)
+
+print('Relative Error, v = 40: ' + str(1 - rc_diag[-1] / int_djdv(v, x)))
+
+print('-------- 3 --------\n')
+
+# Calculate the two conflicting vales individually
+print(' Giant Sum Value: ' + str(int_djdv(v, x)))
+print('Richardson Value: ' + str(rc_diag[-1]))
+print('\n')
+print('Term 1: ' + str(term1(v, x)))
+print('Term 2: ' + str(term2(v, x)))
